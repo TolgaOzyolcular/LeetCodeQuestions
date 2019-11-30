@@ -1,29 +1,33 @@
-class ReverseInteger {
-  
-  public static void main(String[] args){
-    int input = -123;
-    
-    ReverseInteger t = new ReverseInteger();
-    System.out.println(t.reverse(input));
-    
-  }
-  
-  public int reverse(int x) {      
-      String input = String.valueOf(Math.abs(x));
-      String output = "";
+public class ReverseInteger {
       
-      if(input != null){
-        for(int i = (input.length()-1); i>=0; i--){
-          output += input.charAt(i); 
-        }
-      }
+       public static void main(String[] args) {
+              int input = -123;
+             
+              System.out.println(reverse(input));
+             
+       }
       
-      if(x>=0){
-        return Integer.parseInt(output);
-      }
-      else
-         return (Integer.parseInt(output) * -1);
-       
-  }
-  
+       public static int reverse(int input) {
+           int reversed = 0;
+    
+           String initialString = Integer.toString(Math.abs(input));
+           String reversedString = "";
+          
+           for(int i = initialString.length()-1; i >= 0; i--)
+                 reversedString += initialString.charAt(i);
+           
+           try{
+        	   		reversed = Integer.parseInt(reversedString);
+        	   }
+           
+           catch(Exception NumberFormatException){
+        	   		reversed = 0;
+        	   }
+               
+           if(input < 1)
+                 reversed  = reversed * -1;
+          
+           return reversed;
+       }
+ 
 }

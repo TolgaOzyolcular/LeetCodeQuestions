@@ -1,22 +1,28 @@
-class PalindromeNumber {
-  
-  public static void main(String[] args){
-    int input = 10;
-    
-    PalindromeNumber t = new PalindromeNumber();
-    System.out.println(t.isPalindrome(input));    
-  }
-  
-  public boolean isPalindrome(int x) {    
-    String input = Integer.toString(x);
-    StringBuffer reverse = new StringBuffer();
-    reverse.append(input);
-    reverse.reverse();
-    
-    if(input.equals(reverse.toString())){
-      return true;
-    }    
-    else
-      return false;   
-  }
+
+public class PalindromeNumber {
+      
+       public static void main (String[] args) {
+              int input = 121;
+             
+              System.out.println(isPalindrome(input));
+       }
+ 
+    public static boolean isPalindrome(int input) {   
+       int lastDigit = 0;
+       int reverse = 0;
+       int tempNum = input;
+      
+       while(tempNum > 0) {
+              lastDigit = tempNum % 10;
+              reverse = (reverse * 10) + lastDigit;
+              tempNum = tempNum / 10;          
+       }
+ 
+       if(reverse == input)
+              return true;
+       else
+              return false;
+             
+    }
+      
 }
