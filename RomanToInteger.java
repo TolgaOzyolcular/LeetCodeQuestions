@@ -1,69 +1,63 @@
-
-
-class RomanToInteger {
-	
-	public static void main(String[] args) {
-		String input = "MCMXCIV";		
-		RomanToInteger t = new RomanToInteger();
-		System.out.println(t.romanToInt(input));		
-	}
-	
-    public int romanToInt(String s) {
-    		int firstNumber = 0;
-    		int secondNumber = 0;
-    		int output = 0;
-    		
-    		for(int i = 0; i<s.length(); i++) {
-    			
-    			firstNumber = numbers(s.charAt(i));
-    			
-    			if((i+1)<s.length()) {
-    				
-    				secondNumber = numbers(s.charAt(i+1));
-    				
-    				if(firstNumber >= secondNumber) 
-    					output += firstNumber;  
-    				   				
-    				else {
-    					output += (secondNumber - firstNumber);
-    					i++;
-    				}
-    			}
-    			
-    			else {
-    				output += numbers(s.charAt(i));
-    			}
-    			
-    			   			
-    		}
-    	
-    		return output;
-        
+import java.util.HashMap;
+ 
+public class RomanToInteger {
+       public static void main (String[] args) {
+              String input = "LVIII";
+             
+              System.out.println(romanToInt(input));
+       }
+      
+       public static int romanToInt(String input) {
+              int number = 0;
+             
+              HashMap<String, Integer> values = new HashMap<String, Integer>();
+             
+              values.put("I", 1);
+              values.put("IV", 4);
+              values.put("V", 5);
+              values.put("IX", 9);
+              values.put("X", 10);
+              values.put("XL", 40);
+              values.put("L", 50);
+              values.put("XC", 90);
+              values.put("C", 100);
+              values.put("CD", 400);
+              values.put("D", 500);
+              values.put("CM", 900);
+              values.put("M", 1000);
+             
+              for(int i = 0; i < input.length(); i++) {
+                     try {
+                           char firstChar = input.charAt(i);
+                           String numString = "";
+                                               
+                           if(i+1 < input.length()) {
+                                  char secondChar = input.charAt(i+1);                  
+                                  numString = numString + firstChar + secondChar;
+                                 
+                                  if(values.containsKey(numString)) {
+                                         number += values.get(numString);
+                                         i++;
+                                  }     
+                                 
+                                  else {
+                                         numString = "" + firstChar;
+                                         number += values.get(numString);
+                                  }
+                           }
+                          
+                           else {
+                                  numString = "" + firstChar;
+                                  number += values.get(numString);
+                           }     
+                     }
+                    
+                     catch(Exception e) {
+                           System.out.println("Wrong Entry");
+                           System.exit(0);
+                     }
+              }
+             
+        return number;
     }
-    
-    public int numbers(char i) {
-		if(i == 'I') 
-		return 1;
-	
-		else if(i == 'V') 
-			return 5;
-		
-		else if(i == 'X') 
-			return 10;
-		
-		else if(i == 'L') 
-			return 50;
-		
-		else if(i == 'C') 
-			return 100;
-		
-		else if(i == 'D') 
-			return 500;
-		
-		else if(i == 'M') 
-			return 1000;
-		
-		else
-			return 0;
-	}
 }

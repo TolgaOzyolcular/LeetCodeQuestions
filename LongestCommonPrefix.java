@@ -1,32 +1,34 @@
-class LongestCommonPrefix {
-	
-	public static void main(String[] args) {
-		String[] input = {"dog","racecar","car"};
-		
-		LongestCommonPrefix t = new LongestCommonPrefix();
-		System.out.println(t.longestCommonPrefix(input));
-	}
-    public String longestCommonPrefix(String[] s) {
-    		int length = s[0].length();
-        char compare = ' ';
-        String output = "";
-        
-    		for(int i = 1; i < s.length; i++) {
-    			if(length > s[i].length())
-    				length = s[i].length();
-    		}
-    		
-    		for(int i = 0; i<length; i++) {
-    			compare = s[0].charAt(i);    			
-    			//System.out.println(output);
-    			for(int j = 0; j<s.length; j++) {
-    				if(compare != s[j].charAt(i)) {
-    					return output;
-    				}
-    			}
-    			output += compare;
-    		}
-    		
-    		return output;
+public class LongestCommonPrefix {
+       public static void main(String[] args) {
+              String[] input = {"flower","flow","flight"};
+             
+              System.out.println(longestCommonPrefix(input));
+       }
+      
+       public static String longestCommonPrefix(String[] input) {
+        StringBuilder commonPrefix = new StringBuilder();
+        int stringLength = input[0].length();
+        boolean isEqual = false;
+       
+        for(int i = 0; i<input.length; i++) {
+              if(input[i].length() < stringLength)
+                     stringLength = input[i].length();
+        }
+       
+        for(int i = 0; i < stringLength; i++) {
+              char letter = input[0].charAt(i);
+             
+              for(int j = 0; j < input.length; j++) {
+                     if(letter == input[j].charAt(i))
+                           isEqual = true;
+                     else
+                           isEqual = false;
+              }
+             
+              if(isEqual)
+                     commonPrefix.append(letter);
+        }
+       
+        return commonPrefix.toString();
     }
 }
