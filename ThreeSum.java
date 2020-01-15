@@ -1,37 +1,32 @@
 import java.util.*;
 
-class ThreeSum {
-	
-	public static void main(String[] args) {
-		int[] array = {-1, 0, 1, 2, -1, -4};
+public class ThreeSum {
+	public static void main (String[] args) {
+		int[] input = {-1, 0, 1, -2, -1, 3};
 		int target = 0;
 		
-		ThreeSum t = new ThreeSum();
-		System.out.println(t.threeSum(array, target));
+		System.out.println(threeSum(input));
 	}
-	
-    public List<List<Integer>> threeSum(int[] nums, int target) {
-        List<List<Integer>> output = new ArrayList<List<Integer>>();      
-        Arrays.sort(nums);
-        
-        for(int i = 0; i<nums.length; i++){
-        		for(int j = i+1; j<nums.length; j++){
-        			for(int k = j+1; k<nums.length; k++){
-                    	if((nums[i] + nums[j] + nums[k]) == target) {  
-                    		List<Integer> inner = new ArrayList<Integer>();
-                    		inner.add(nums[i]);
-                    		inner.add(nums[j]);
-                    		inner.add(nums[k]);    
-                    		output.add(inner);
-                    	}                   	
-                 }
-            }
+	public static List<List<Integer>> threeSum(int[] nums) {
+        List<List<Integer>> output = new ArrayList<List<Integer>>();        
+        int a, b, c;
+               
+        for(int i = 0; i < nums.length; i++) {
+        		for(int j = i+1; j < nums.length; j++) {
+        			for(int k = j+1; k < nums.length; k++) {
+        				a = nums[i];
+        				b = nums[j];
+        				c = nums[k];
+            			if(a+b+c == 0) {
+            				List<Integer> chosenNums = new ArrayList<Integer>(Arrays.asList(a, b, c));
+            				Collections.sort(chosenNums);
+            				if(!output.contains(chosenNums))
+            					output.add(chosenNums);
+            			}
+            		}
+        		}
         }
         
-        //Remove duplicates
-        
-        HashSet <List<Integer>> mySet = new HashSet<List<Integer>>(output);        
-        output = new ArrayList<List<Integer>>(mySet);
         
         return output;
     }
