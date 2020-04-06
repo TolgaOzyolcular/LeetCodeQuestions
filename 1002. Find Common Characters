@@ -1,0 +1,39 @@
+import java.util.regex.*;
+class Solution {
+    public List<String> commonChars(String[] A) {
+        
+        List<String> common = new ArrayList<String>();
+        HashMap<String, Integer> map = new HashMap<String, Integer>();
+        
+        for(int i = 0; i < A[0].length(); i++){
+            int occurence = map.containsKey(Character.toString(A[0].charAt(i))) ? map.get(Character.toString(A[0].charAt(i))) : 0;
+            map.put(Character.toString(A[0].charAt(i)), occurence + 1);         
+
+            String letter = Character.toString(A[0].charAt(i));
+            int countTill = map.get(letter);
+            
+            int count = 0;
+            
+            for(int j = 1; j < A.length; j++){
+                int count2 = 0;
+                Pattern pattern = Pattern.compile(letter);
+                Matcher matcher = pattern.matcher(A[j]);
+                
+                while (matcher.find()){
+                    count++;
+                    count2++;
+                    if(count2 == countTill)
+                        break;
+                }
+            }
+            
+            if(count == (countTill*(A.length-1)))
+                common.add(letter);
+                          
+        }
+
+        
+        return common;
+        
+    }
+}
