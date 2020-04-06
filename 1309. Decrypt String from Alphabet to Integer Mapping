@@ -1,0 +1,35 @@
+import java.util.regex.*;
+
+class Solution {
+    public String freqAlphabets(String s) {
+        HashMap<String, String> map = new HashMap<String, String>();
+        char[] alphabet = "abcdefghijklmnopqrstuvwxyz".toCharArray();
+        boolean digitsLeft = true;
+        
+        for(int i = 1; i <= 9; i++){
+            map.put(Integer.toString(i), Character.toString(alphabet[i-1]));
+        }
+        
+        for(int i = 10; i <= 26; i++){
+            map.put((Integer.toString(i) + "#"), Character.toString(alphabet[i-1]));
+        }
+            
+        Pattern pattern = Pattern.compile("[0-9][0-9]#");
+        Matcher matcher = pattern.matcher(s);
+        
+        while(matcher.find()){
+            String target = matcher.group();
+            s = s.replace(target, map.get(target));
+        }
+        
+        Pattern pattern2 = Pattern.compile("[0-9]");
+        Matcher matcher2 = pattern2.matcher(s);
+        
+        while(matcher2.find()){
+            String target = matcher2.group();
+            s = s.replace(target, map.get(target));
+        }
+        
+        return s;
+    }
+}
