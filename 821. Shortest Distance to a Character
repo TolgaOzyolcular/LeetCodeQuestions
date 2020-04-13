@@ -1,0 +1,25 @@
+class Solution {
+    public int[] shortestToChar(String S, char C) {
+        char[] chars = S.toCharArray();
+        int[] distance = new int[S.length()];
+           
+        for(int i = 0; i < S.length(); i++){
+            char currentLetter = S.charAt(i);
+            int tempDistanceVal = 0;
+            int distanceVal = S.length();
+            
+            for(int j = 0; j < S.length(); j++){
+                if(S.charAt(j) == C){
+                    tempDistanceVal = Math.abs(j - i);
+                    if(tempDistanceVal < distanceVal)
+                        distanceVal = tempDistanceVal;
+                }                   
+            }
+            
+            distance[i] = distanceVal;
+            
+        }
+        
+        return distance;
+    }
+}
