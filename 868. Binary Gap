@@ -1,0 +1,33 @@
+class Solution {
+    public int binaryGap(int N) {
+        int distance = 0;;
+        String number = Integer.toBinaryString(N);
+        boolean hit = false;
+        int index1 = 0;
+        int index2 = 0;
+        int i = 0;
+        
+        System.out.println(number);
+        
+        
+        while(i < number.length()){
+            
+            if(number.charAt(i) == '1' && !hit){
+                index1 = i;
+                hit = true;
+            }
+            else if(number.charAt(i) == '1' && hit){
+                index2 = i;
+                if(index2 - index1 > distance)
+                    distance = index2 - index1;
+                i--;
+                hit = false;
+            }
+            
+            i++;
+        }
+        
+        return distance;
+           
+    }
+}
