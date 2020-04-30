@@ -1,0 +1,38 @@
+class Solution {
+    public boolean validPalindrome(String s) {
+        boolean palindrome = false;
+
+        for(int i = 0; i < (s.length()/2); i++){
+            int j = (s.length()-1)-i;
+            
+            if(s.charAt(i) != s.charAt(j))
+                return deleteCharPalindrom(s,i,j);
+                        
+            j--;
+        }
+        
+        return true;
+    }
+    
+    public boolean deleteCharPalindrom(String s, int i, int j){
+        StringBuilder input = new StringBuilder(s);
+        String temp = "";
+
+        input.deleteCharAt(i);
+        temp = input.toString();
+
+        if(temp.equals(input.reverse().toString()))
+            return true;
+        
+        StringBuilder input2 = new StringBuilder(s);
+
+        input2.deleteCharAt(j);
+        temp = input2.toString();
+        
+        if(temp.equals(input2.reverse().toString()))
+            return true;
+        
+        return false;
+    }
+
+}
