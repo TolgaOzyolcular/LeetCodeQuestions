@@ -1,0 +1,50 @@
+class Solution {
+    public boolean isValidSerialization(String preorder) {
+        String[] nodes = preorder.split(",");
+        System.out.println(Arrays.toString(nodes));       
+        
+        if(checkIfValid(nodes) && checkNumberOfNull(nodes))
+            return true;
+        else
+            return false;
+    }
+    
+    public boolean checkIfValid(String[] nodes){
+        System.out.println("First");
+        for(int i = 0; i < nodes.length; i++){ //check if valid;
+            if(nodes[i].equals("#"))
+                continue;
+            else{
+                try {
+                    double checkNumber = Double.parseDouble(nodes[i]);
+                } 
+                catch (NumberFormatException nfe) {
+                    return false;
+                }  
+            }
+        }
+        
+        return true;
+    }
+    
+    public boolean checkNumberOfNull(String[] nodes){
+        System.out.println("Second");
+        
+        int count = 1;
+        for (String node : nodes) {
+            count--;
+            if (count < 0) {
+                return false;
+            }
+            if (!node.equals("#")) {
+                count += 2;
+            }
+        }
+        
+        if(count == 0)
+            return true;
+        else
+            return false;
+    }
+
+}
