@@ -1,0 +1,63 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public int sumNumbers(TreeNode root) {
+        HashSet<TreeNode> visited = new HashSet<TreeNode>();
+        Stack<TreeNode> nodes = new Stack<TreeNode>();
+        Queue<TreeNode> queue = new LinkedList<TreeNode>();
+        int sum = 0;
+        
+        if(root == null)
+            return sum;
+        
+        TreeNode current = root;
+        nodes.push(current);
+        visited.add(current);
+        
+        StringBuilder number = new StringBuilder(Integer.toString(current.val));
+          
+        while(!nodes.isEmpty()){
+            
+            if(current.left != null && !visited.contains(current.left)){
+                current = current.left;
+                number.append(Integer.toString(current.val));
+                nodes.push(current);
+                visited.add(current);
+            }
+            else{
+                if(current.right != null && !visited.contains(current.right)){
+                    current = current.right;
+                    number.append(Integer.toString(current.val));
+                    nodes.push(current);
+                    visited.add(current);
+                }
+                else{
+                    System.out.println(number.toString());
+                    if(current.left == null && current.right == null)
+                        sum += Integer.parseInt(number.toString());
+                    
+                    nodes.pop();
+                    if(!nodes.isEmpty())
+                        current = nodes.peek();
+                    number.delete(number.length()-1,number.length());
+                }
+            }
+            
+        }
+        
+        return sum;
+    }
+}
