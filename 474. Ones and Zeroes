@@ -1,0 +1,69 @@
+class Solution {
+    public int findMaxForm(String[] strs, int m, int n) {
+        int maxStrings = 0;
+        
+		// Input Set
+		List<String> ints = new ArrayList<String>(Arrays.asList(strs));
+
+		// Generate Powerset using Guava
+		List<List<String>> result = powerSet(ints);
+
+		// print results
+		for (List<String> set: result){
+            int countM = 0;
+            int countN = 0;
+            
+			for(int i = 0; i < set.size(); i++){
+                for(int j = 0; j < set.get(i).length(); j++){
+                
+                    if(set.get(i).charAt(j) == '0')
+                        countM++;
+                    if(set.get(i).charAt(j) == '1')
+                        countN++;
+                         
+                }                
+                                
+            }
+            System.out.println(set + ", " + countM + ", " +countN);
+            
+            if(countM==m && countN==n){
+                //System.out.println(set + ", " + countM + ", " +countN);
+                if(maxStrings < set.size())
+                    maxStrings = set.size();   
+                
+            }              
+
+        }
+        
+        return maxStrings;
+    }
+    
+    public List<List<String>> powerSet(List<String> ints)
+	{
+		// convert set to a list
+		List<String> S = new ArrayList<>(ints);
+
+		// N stores total number of subsets
+		long N = (long) Math.pow(2, S.size());
+
+		// Set to store subsets
+		List<List<String>> result = new ArrayList<>();
+
+		// generate each subset one by one
+		for (int i = 0; i < N; i++)
+		{
+			List<String> set = new ArrayList<>();
+		
+			// check every bit of i
+			for (int j = 0; j < S.size(); j++)
+			{
+				// if j'th bit of i is set, add S.get(j) to current set
+				if ((i & (1 << j)) != 0)
+					set.add(S.get(j));
+			}
+			result.add(set);
+		}
+
+		return result;
+	}
+}
