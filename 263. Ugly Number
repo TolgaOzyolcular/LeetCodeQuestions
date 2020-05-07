@@ -1,0 +1,61 @@
+class Solution {
+    public boolean isUgly(int num) {
+        if(num < 1)
+            return false;
+        
+        while(num % 2 == 0)
+            num = num/2;
+        while(num % 3 == 0)
+            num = num/3;
+        while(num % 5 == 0)
+            num = num/5;
+        
+        if(num == 1)
+            return true;
+        else
+            return false;
+    }
+}
+
+/*
+class Solution {
+    public boolean isUgly(int num) {
+        List<Integer> factors = new ArrayList<Integer>();
+        List<Integer> primeNums = new ArrayList<Integer>();
+        primeNums.add(2);
+        primeNums.add(3);
+        primeNums.add(5);
+        
+        if(num < 1)
+            return false;
+        
+        for(int factor = 2; factor <= num/2; factor++) {
+			if(num % factor == 0) {
+                boolean isPrime = true;
+				if (factor % 2 == 0)
+                    isPrime = false;
+                else{
+                    for(int i=3;i*i<=factor;i+=2) {
+                        if(factor % i == 0)
+                            isPrime = false;
+                    }
+                }
+                
+                if(isPrime)
+                    factors.add(factor);
+                
+			}
+		}
+        
+        System.out.println(factors);
+        
+        for(int i = 0; i < factors.size(); i++){
+            if(!primeNums.contains(factors.get(i)))
+                return false;
+        }
+                
+        return true;
+        
+    }
+}
+*/
