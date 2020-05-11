@@ -1,0 +1,67 @@
+class Solution {
+    public int[] findOrder(int numCourses, int[][] prerequisites) {
+        int[] finalArray = new int[numCourses];
+        List<Integer> topologicalOrder = findCycle(numCourses, prerequisites);
+        
+        Collections.reverse(topologicalOrder);
+        
+        if(topologicalOrder.size() != 0){
+            for (int i=0; i < topologicalOrder.size(); i++)        
+                finalArray[i] = topologicalOrder.get(i).intValue();
+
+            return finalArray;
+        }
+        
+        else
+            return new int[0];
+    }
+    
+    public List<Integer> findCycle(int numCourses, int[][] prerequisites){
+        
+        List<Integer> whiteList = new ArrayList<Integer>();
+        List<Integer> grayList = new ArrayList<Integer>();
+        List<Integer> blackList = new ArrayList<Integer>();
+        
+        for(int i = 0; i < numCourses; i++)
+            whiteList.add(i);        
+        
+        int current = whiteList.get(0);
+        
+        while(blackList.size() < numCourses){
+            if(grayList.isEmpty())
+                current = whiteList.get(0);
+            
+            if(!grayList.contains(current) && !blackList.contains(current)){ // check if need new num.
+                whiteList.remove(0);
+                grayList.add(current);
+            }
+            
+            boolean numFound = false;
+            
+            for(int i = 0; i < prerequisites.length; i++){
+                int numLeftCol = prerequisites[i][0];
+                if(prerequisites[i][1] == current && whiteList.contains(numLeftCol)){
+                    current = numLeftCol;
+                    grayList.add(current);
+                    whiteList.remove(new Integer(current));
+                    numFound = true;
+                    break;
+                }
+                
+                else if(prerequisites[i][1] == current && grayList.contains(numLeftCol))
+                    return Collections.emptyList();
+                              
+            }
+            
+            if(!numFound){
+                blackList.add(current);
+                grayList.remove(grayList.size()-1);
+                if(!grayList.isEmpty())
+                    current = grayList.get(grayList.size()-1);
+            }
+                   
+        }
+        
+        return blackList;
+    }
+}
