@@ -1,0 +1,70 @@
+class Solution {
+    public String decodeAtIndex(String S, int K) {
+        StringBuilder tape = new StringBuilder();
+        
+        for(int index = 0; index < S.length(); index++){
+            char tempChar = S.charAt(index);
+            String tempString = Character.toString(tempChar);           
+            if(K > tape.length()){
+                if(isNumeric(tempString)){
+                    int tempInt = Integer.parseInt(tempString);
+                    String repeatString = tape.toString();
+
+                    for(int j = 0; j < (tempInt-1); j++)                    
+                        tape.append(repeatString);
+                }
+
+                else
+                    tape.append(S.charAt(index));
+            }
+            
+            else
+                break;
+        }        
+        
+        return Character.toString(tape.toString().charAt(K-1));
+    }
+    
+    public static boolean isNumeric(String strNum) {
+        
+        try {
+            double d = Double.parseDouble(strNum);
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
+        
+        return true;
+    }
+}
+
+/*
+class Solution {
+    public String decodeAtIndex(String S, int K) {
+        long size = 0;
+        int N = S.length();
+
+        // Find size = length of decoded string
+        for (int i = 0; i < N; ++i) {
+            char c = S.charAt(i);
+            if (Character.isDigit(c))
+                size *= c - '0';
+            else
+                size++;
+        }
+
+        for (int i = N-1; i >= 0; --i) {
+            char c = S.charAt(i);
+            K %= size;
+            if (K == 0 && Character.isLetter(c))
+                return Character.toString(c);
+
+            if (Character.isDigit(c))
+                size /= c - '0';
+            else
+                size--;
+        }
+
+        throw null;
+    }
+}
+*/
