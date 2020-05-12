@@ -1,0 +1,100 @@
+class Solution {
+    public int maxSumTwoNoOverlap(int[] A, int L, int M) {
+        int sum = 0;
+        int lStart = 0;
+        int mStart = 0;
+        int[] lTest = new int[L];
+        int[] mTest = new int[M];
+               
+        if(L >= M){
+            for(int i = 0; i < (A.length-L)+1; i++){ // i is pointer for L
+                lStart = i;
+                int lSum = 0;
+
+                for(int j = 0; j < L; j++){ 
+                    lTest[j] = A[j+lStart];
+                    lSum += A[j+lStart];
+                }
+
+                System.out.println(Arrays.toString(lTest));
+
+                for(int j = 0; j < (A.length-M)+1; j++){ // j is pointer for M
+
+                    mStart = j;
+                    int mSum = 0;
+
+                    if((mStart >= lStart && mStart < (lStart+L)) || ((mStart+M) >= lStart && (mStart+M) < (lStart+L))){
+                        System.out.println("Hit");
+                        mStart = (lStart+L);
+                        j = mStart;
+                    }
+
+
+                    if((mStart+M) <= A.length){
+                        for(int k = 0; k < M; k++){
+                            mTest[k] = A[k+mStart];
+                            mSum += A[k+mStart];
+                        }
+
+                        if(sum < (lSum + mSum))
+                            sum = lSum + mSum;
+                    }
+                    else
+                        break;
+
+
+                    System.out.println(Arrays.toString(mTest));
+
+                }
+
+            }
+        }
+        
+        else{
+            for(int i = 0; i < (A.length-M)+1; i++){ // i is pointer for M
+                mStart = i;
+                int mSum = 0;
+
+                for(int j = 0; j < M; j++){ 
+                    mTest[j] = A[j+mStart];
+                    mSum += A[j+mStart];
+                }
+
+                System.out.println(Arrays.toString(mTest));
+
+                for(int j = 0; j < (A.length-L)+1; j++){ // j is pointer for L
+
+                    lStart = j;
+                    int lSum = 0;
+
+                    if((lStart >= mStart && lStart < (mStart+M)) || ((lStart+L) >= mStart && (lStart+L) < (mStart+M))){
+                        System.out.println("Hit");
+                        lStart = (mStart+M);
+                        j = lStart;
+                    }
+
+                    if((lStart+L) <= A.length){
+                        for(int k = 0; k < L; k++){
+                            lTest[k] = A[k+lStart];
+                            lSum += A[k+lStart];
+                        }
+
+                        if(sum < (mSum + lSum))
+                            sum = mSum + lSum;
+                    }
+                    else
+                        break;
+
+
+                    System.out.println(Arrays.toString(lTest));
+
+                }
+            }
+            //System.out.println(mSum);
+        }
+       
+        System.out.println(sum);
+
+        return sum;
+    }
+}
