@@ -1,0 +1,33 @@
+class Solution {
+    public static int search(int[] nums, int target) {
+                               
+        int lo = 0;
+        int hi = nums.length;
+        int index = (int) Math.round((hi + lo) / 2);
+        int countLoop = 0;
+        
+        System.out.println(index);
+        
+        while((lo <= hi) && (countLoop <= nums.length/2)){         
+            System.out.println(index);
+            
+            if(nums[index] == target)
+                return index;
+                
+            else if(nums[index] > target){
+                hi = index;
+                index = Math.round((hi + lo) / 2);
+            }
+            
+            else{
+                lo = index;
+                index = Math.round((hi + lo) / 2);                 
+            }
+            
+            countLoop++;
+        }
+        
+        return -1;
+       
+    }
+}
