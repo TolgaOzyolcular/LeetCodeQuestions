@@ -1,0 +1,124 @@
+class Solution {
+    public void nextPermutation(int[] nums) {
+        boolean decreaseExists = false;
+        int firstIndex = 0;
+        int firstDecrease = 0;
+        int highestNum = 0;
+        
+        for(int i = nums.length-1; i >= 1; i--){
+            if(nums[i] > highestNum)
+                highestNum = nums[i];
+            
+            if(nums[i-1] < nums[i]){
+                firstIndex = i-1;
+                firstDecrease = nums[firstIndex];
+                decreaseExists = true;
+                break;
+            }
+        }
+        
+        if(!decreaseExists)
+            Arrays.sort(nums);
+               
+        else{
+            int closestIncrease = highestNum;
+            int secondIndex = nums.length-1;
+            
+            for(int i = firstIndex+1; i < nums.length; i++){
+                if(nums[i] > firstDecrease && nums[i] <= closestIncrease){
+                    closestIncrease = nums[i];
+                    secondIndex = i;
+                }                
+            }
+
+            swap(nums, firstIndex, secondIndex);            
+            Arrays.sort(nums, firstIndex+1, nums.length);
+        }       
+    }
+    
+    public void swap(int[] input, int a, int b) {
+        int tmp = input[a];
+        input[a] = input[b];
+        input[b] = tmp;
+    }
+}
+
+/*
+class Solution {
+    public void nextPermutation(int[] nums) {
+        int[] indexes = new int[nums.length];
+        int[] originalNums = nums.clone();
+        List<String> list = new ArrayList<String>();
+        list.add(convertToString(nums));
+        
+        int i = 0;
+        while (i < nums.length) {
+            if (indexes[i] < i) {                
+                swap(nums, i % 2 == 0 ?  0: indexes[i], i); 
+                list.add(convertToString(nums));
+                //System.out.println(list);
+                indexes[i]++;
+                i = 0;
+            }
+            else {
+                indexes[i] = 0;
+                i++;
+            }
+        }
+        
+        Set<String> set = new HashSet<String>(list);
+        list = new ArrayList(set);
+        
+        int[] test = findGreaterPermutation(list, originalNums);
+        i=0;
+        while(i < nums.length){
+            nums[i] = test[i];
+            i++;
+        }
+        
+        System.out.println(list);
+    }
+    
+    public int[] findGreaterPermutation(List<String> list, int[] originalNums) {
+        Collections.sort(list,new Comparator<String>() {    
+            public int compare(String strings, String otherStrings) {
+                return strings.compareTo(otherStrings);
+            }
+        });
+        
+        StringBuilder sb = new StringBuilder();
+        int[] returnInt = new int[originalNums.length];
+        
+        for(int i = 0; i < originalNums.length; i++)
+            sb.append(originalNums[i]);
+        
+        if(list.indexOf(sb.toString()) < list.size() -1){
+            int index = list.indexOf(sb.toString()) + 1;
+            String string = list.get(index);
+            for(int i = 0; i < sb.toString().length(); i++){
+                returnInt[i] = Integer.parseInt(String.valueOf(string.charAt(i)));
+            }
+        }
+        else{
+            Arrays.sort(originalNums);
+            return originalNums;
+        }
+        return returnInt;
+    }
+    
+    public void swap(int[] input, int a, int b) {
+        int tmp = input[a];
+        input[a] = input[b];
+        input[b] = tmp;
+    }
+    
+    public String convertToString(int[] nums){
+        StringBuilder sb = new StringBuilder();
+        
+        for(int i = 0; i < nums.length; i++)
+            sb.append(nums[i]);
+        
+        return sb.toString();
+    }    
+}
+*/
