@@ -1,0 +1,152 @@
+class Solution {
+    public int shortestPathBinaryMatrix(int[][] grid) {
+        boolean[][] visited = new boolean[grid.length][grid[0].length];
+        HashMap<ArrayList<Integer>, ArrayList<Integer>> path = new HashMap<ArrayList<Integer>, ArrayList<Integer>>();
+        LinkedList<int[]> queue = new LinkedList<int[]>();
+        
+        // intitialize boolean grid
+        initializeBoolean(visited,grid);
+        
+        if(visited[0][0] == true)
+            return -1;
+        
+        int indexX = 0;
+        int indexY = 0;
+        queue.addFirst(new int[2]);
+        ArrayList<Integer> start = new ArrayList<Integer>(Arrays.asList(0,0));    
+        ArrayList<Integer> finish = new ArrayList<Integer>(Arrays.asList(grid.length-1,grid.length-1)); 
+        path.put(start, start);
+        visited[indexY][indexX] = true;
+        
+        //System.out.println(Arrays.deepToString(visited));
+        
+        while(!queue.isEmpty()){
+            int[] coordinate = queue.pollLast();
+            ArrayList coordinateList = new ArrayList<>(Arrays.asList(coordinate[1],coordinate[0]));
+            indexY = coordinate[0];
+            indexX = coordinate[1];
+
+            if(indexX == grid.length-1 && indexY == grid.length-1)
+                break;
+   
+            List<int[]> adjacentNodes = new ArrayList<int[]>();            
+            checkAdjacent(adjacentNodes, visited, grid, coordinate);
+            
+            if(visited[indexY][indexX] == false)
+                visited[indexY][indexX] = true;
+            
+            //System.out.println(adjacentNodes);
+            
+            for(int i = 0; i < adjacentNodes.size(); i++){
+                int[] eachNode = adjacentNodes.get(i);
+                indexX = eachNode[1];
+                indexY = eachNode[0];
+                ArrayList<Integer> eachNodeList = new ArrayList<Integer>(Arrays.asList(eachNode[1],eachNode[0]));                
+                //System.out.println(Arrays.toString(eachNode));
+                if(visited[indexY][indexX] == false){
+                    queue.addFirst(eachNode);
+                    visited[indexY][indexX] = true;
+                    path.put(eachNodeList, coordinateList);
+                }
+            }            
+        }
+        
+        for(ArrayList<Integer> each : path.keySet()){
+            System.out.println(each + " -> " + path.get(each));
+        }
+                
+        if(!path.containsKey(finish))
+            return -1;
+        
+        return findPath(path, grid, start, finish, grid.length);
+    }
+    
+    public void initializeBoolean(boolean[][] visited, int[][] grid){       
+        for(int i = 0; i < grid.length; i++){
+            for(int j = 0; j < grid.length; j++){
+                if(grid[i][j] == 1)
+                    visited[i][j] = true;
+                else
+                    visited[i][j] = false;
+            }
+        }
+    }
+    
+    public void checkAdjacent(List<int[]> adjacentNodes, boolean[][] visited, int[][] grid, int[] coordinate){
+        int indexX = coordinate[1];
+        int indexY = coordinate[0];
+        
+        if(indexY < grid.length-1){            
+            if(visited[indexY+1][indexX] == false){
+                //System.out.println("Down");
+                adjacentNodes.add(new int[]{(indexY+1), indexX});
+            }                    
+        }
+            
+        if(indexY > 0){                
+            if(visited[indexY-1][indexX] == false){
+                //System.out.println("Up");
+                adjacentNodes.add(new int[]{(indexY-1), indexX});
+            }                    
+        }
+
+        if(indexX < grid.length-1){               
+            if(visited[indexY][indexX+1] == false){
+                //System.out.println("Right");
+                adjacentNodes.add(new int[]{(indexY), indexX+1}); 
+            }                    
+        }
+
+        if(indexX > 0){                
+            if(visited[indexY][indexX-1] == false){
+                //System.out.println("Left");
+                adjacentNodes.add(new int[]{(indexY), indexX-1});
+            }                    
+        }
+
+        if(indexX > 0 && indexY < grid.length-1){
+            if(visited[indexY+1][indexX-1] == false){
+                //System.out.println("Down/Left");
+                adjacentNodes.add(new int[]{(indexY+1), indexX-1});
+            }  
+        }
+
+        if(indexX < grid.length-1 && indexY < grid.length-1){
+            if(visited[indexY+1][indexX+1] == false){
+                //System.out.println("Down/Right");
+                adjacentNodes.add(new int[]{(indexY+1), indexX+1});
+            }  
+        }
+
+        if(indexX > 0 && indexY > 0){
+            if(visited[indexY-1][indexX-1] == false){
+                //System.out.println("Up/Left");
+                adjacentNodes.add(new int[]{(indexY-1), indexX-1});
+            }  
+        }
+
+        if(indexX < grid.length-1 && indexY > 0){
+            if(visited[indexY-1][indexX+1] == false){
+                //System.out.println("Up/Right");
+                adjacentNodes.add(new int[]{(indexY-1), indexX+1});
+            }  
+        }
+    }
+    
+    public static int findPath(HashMap<ArrayList<Integer>, ArrayList<Integer>> path, int[][] grid, ArrayList<Integer> start, ArrayList<Integer> index, int gridLength){
+		ArrayList<ArrayList<Integer>> shortestPath = new ArrayList<ArrayList<Integer>>();        
+        int count = 0;
+        
+		while(!index.equals(start)) {            
+            //System.out.println(index + " -> " + path.get(index));
+			shortestPath.add(index);
+			index = path.get(index);
+		}
+        		
+		shortestPath.add(start);
+		//Collections.reverse(shortestPath);
+		
+		return shortestPath.size();
+    }
+    
+}
