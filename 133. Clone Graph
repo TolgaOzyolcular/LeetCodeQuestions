@@ -1,0 +1,75 @@
+/*
+// Definition for a Node.
+class Node {
+    public int val;
+    public List<Node> neighbors;
+    
+    public Node() {
+        val = 0;
+        neighbors = new ArrayList<Node>();
+    }
+    
+    public Node(int _val) {
+        val = _val;
+        neighbors = new ArrayList<Node>();
+    }
+    
+    public Node(int _val, ArrayList<Node> _neighbors) {
+        val = _val;
+        neighbors = _neighbors;
+    }
+}
+*/
+
+class Solution {
+    public Node cloneGraph(Node node) {
+        LinkedList<Node> queueOriginal = new LinkedList<Node>();
+        LinkedList<Node> queueClone = new LinkedList<Node>();
+        HashSet<Node> visited = new HashSet<Node>();
+        ArrayList<Node> created = new ArrayList<Node>();        
+                
+        queueOriginal.add(node);
+        visited.add(node);
+        
+        if(node == null)
+            return null;
+        
+        Node first = new Node(node.val);   
+        created.add(first);
+        queueClone.add(first);
+        
+        //System.out.println(node.neighbors);
+               
+        while(!queueOriginal.isEmpty()){
+            Node currentOriginal = queueOriginal.pollLast();
+            Node currentClone = queueClone.pollLast();
+            
+            System.out.println("original: " + currentOriginal.val);
+            System.out.println("clone: " + currentClone.val);
+            
+            for(int i = 0; i < currentOriginal.neighbors.size(); i++){
+                if(!visited.contains(currentOriginal.neighbors.get(i))){
+                    queueOriginal.addFirst(currentOriginal.neighbors.get(i));
+					visited.add(currentOriginal.neighbors.get(i)); 
+                    
+                    Node neighbor = new Node(currentOriginal.neighbors.get(i).val);
+                    created.add(neighbor);
+                    currentClone.neighbors.add(neighbor);
+                    queueClone.addFirst(neighbor);                    
+                }
+                
+                else{
+                    System.out.println(currentClone.val);
+                    for(int j = 0; j < created.size(); j++){
+                        if(created.get(j).val == currentOriginal.neighbors.get(i).val){
+                            currentClone.neighbors.add(created.get(j));
+                        }
+                    }
+                }
+            }                        
+        }
+        
+        return first;
+    }
+    
+}
