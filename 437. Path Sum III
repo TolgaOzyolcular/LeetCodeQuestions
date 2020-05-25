@@ -1,0 +1,96 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+
+class Solution {
+    public int pathSum(TreeNode root, int sum) {
+        if (root == null ) return 0;
+        // find how many paths exists inclusive of the node we are at then recurse to the left and right subtrees
+        return helper(root, sum, 0) + pathSum(root.left, sum) + pathSum(root.right, sum);
+    }
+
+    private int helper(TreeNode root, int sum, int currVal) {
+        if (root == null) return 0;
+        currVal += root.val;
+
+        // We can't just return 1.. subtrees could also have a valid summation..
+        int result = (sum == currVal) ? 1 : 0;
+        return result + helper(root.left, sum, currVal) + helper(root.right, sum, currVal);
+    }
+}
+
+/*
+class Solution {
+    public int pathSum(TreeNode root, int sum) {
+        if(root == null)
+            return 0;
+        
+        if (root.left == null && root.right == null) { //leaf nodes
+            if(root.val == sum) 
+                return 1;
+        }
+        
+        Stack<TreeNode> stack = new Stack<TreeNode>();
+        HashSet<TreeNode> visited = new HashSet<TreeNode>();   
+        LinkedList<TreeNode> sums = new LinkedList<TreeNode>();
+        
+        int pathNum = 0;
+
+        TreeNode current = root;
+        stack.push(current);
+        visited.add(current);
+        sums.add(current);
+        
+        while(!stack.isEmpty()){
+            if(current.left != null && !visited.contains(current.left)){
+                current = current.left;
+                stack.push(current);
+                visited.add(current);
+                sums.add(current);
+            }
+            else{
+                if(current.right != null && !visited.contains(current.right)){
+                    current = current.right;
+                    stack.push(current);
+                    visited.add(current);
+                    sums.add(current);
+                }
+                else{                    
+                    pathNum += checkSum(sums,sum);
+                    sums.pollLast();
+                    stack.pop();                                        
+                    if(!stack.isEmpty())
+                        current = stack.peek();
+                    
+                }
+            }
+        }
+        
+        return pathNum;
+    }
+    
+    public int checkSum(LinkedList<TreeNode> sums, int sum){
+        int pathNum = 0;
+
+        for(int i = 0; i < sums.size(); i++){
+            int currentSum = sums.get(i).val;
+            
+            for(int j = i+1; j < sums.size(); j++)          
+                currentSum += sums.get(j).val;
+                        
+            if(currentSum == sum)
+                pathNum++;
+        }
+        
+        
+        
+        return pathNum;
+    }
+}
+*/
