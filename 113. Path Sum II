@@ -1,0 +1,73 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public List<List<Integer>> pathSum(TreeNode root, int sum) {
+        List<List<Integer>> allPaths = new ArrayList<>();
+        LinkedList<Integer> path = new LinkedList<Integer>();
+        HashSet<TreeNode> visited = new HashSet<TreeNode>();
+        Stack<TreeNode> stack = new Stack<TreeNode>();
+        int runningTotal = 0;
+        
+        if(root == null)
+            return allPaths;        
+        
+        TreeNode current = root;
+        stack.push(current);
+        visited.add(current);
+        path.add(current.val);
+        runningTotal += current.val;
+        
+        if(root.left == null && root.right == null && root.val == sum){
+            List<Integer> aPath = new LinkedList<Integer>(path);
+            allPaths.add(aPath);
+            return allPaths;
+        }
+        
+        while(!stack.isEmpty()){
+            if(current.left != null && !visited.contains(current.left)){
+                current = current.left;
+                stack.push(current);
+                visited.add(current);
+                path.add(current.val);
+                runningTotal += current.val;
+            }
+            else{
+                if(current.right != null && !visited.contains(current.right)){
+                    current = current.right;
+                    stack.push(current);
+                    visited.add(current);
+                    path.add(current.val);
+                    runningTotal += current.val;
+                }
+                else{
+                    if(runningTotal == sum && (current.right == null && current.left == null)){
+                        List<Integer> aPath = new LinkedList<Integer>(path);
+                        allPaths.add(aPath);
+                    }
+                    
+                    runningTotal -= path.pollLast();                    
+                    stack.pop();
+                    if(!stack.isEmpty())
+                        current = stack.peek();
+                }
+            }
+            
+            
+        }
+        
+        return allPaths;
+    }
+}
