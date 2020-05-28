@@ -1,69 +1,118 @@
 class Solution {
     public int findMaxForm(String[] strs, int m, int n) {
+        if(strs.length < 1)
+            return 0;
+        
         int maxStrings = 0;
         
-		// Input Set
-		List<String> ints = new ArrayList<String>(Arrays.asList(strs));
-
-		// Generate Powerset using Guava
-		List<List<String>> result = powerSet(ints);
-
-		// print results
-		for (List<String> set: result){
-            int countM = 0;
-            int countN = 0;
+        int[][] dpMatrix = new int[m + 1][n + 1];
+        
+        for(int i = 0; i < strs.length; i++){
+            int zeroCount = 0;
+            int oneCount = 0;
             
-			for(int i = 0; i < set.size(); i++){
-                for(int j = 0; j < set.get(i).length(); j++){
+            zeroCount += strs[i].chars().filter(ch -> ch == '0').count();
+            oneCount += strs[i].chars().filter(ch -> ch == '1').count();
+            
+            for(int j = m; j >= zeroCount; j--){
+                for(int k = n; k >= oneCount; k--)
+                    dpMatrix[j][k]=Math.max(dpMatrix[j][k], dpMatrix[j-zeroCount][k-oneCount]+1); 
                 
-                    if(set.get(i).charAt(j) == '0')
-                        countM++;
-                    if(set.get(i).charAt(j) == '1')
-                        countN++;
-                         
-                }                
-                                
             }
-            System.out.println(set + ", " + countM + ", " +countN);
-            
-            if(countM==m && countN==n){
-                //System.out.println(set + ", " + countM + ", " +countN);
-                if(maxStrings < set.size())
-                    maxStrings = set.size();   
-                
-            }              
-
+        
+            System.out.println(Arrays.deepToString(dpMatrix));
         }
+        
+        maxStrings = dpMatrix[m][n];
+        
+        
         
         return maxStrings;
     }
-    
-    public List<List<String>> powerSet(List<String> ints)
-	{
-		// convert set to a list
-		List<String> S = new ArrayList<>(ints);
-
-		// N stores total number of subsets
-		long N = (long) Math.pow(2, S.size());
-
-		// Set to store subsets
-		List<List<String>> result = new ArrayList<>();
-
-		// generate each subset one by one
-		for (int i = 0; i < N; i++)
-		{
-			List<String> set = new ArrayList<>();
-		
-			// check every bit of i
-			for (int j = 0; j < S.size(); j++)
-			{
-				// if j'th bit of i is set, add S.get(j) to current set
-				if ((i & (1 << j)) != 0)
-					set.add(S.get(j));
-			}
-			result.add(set);
-		}
-
-		return result;
-	}
 }
+
+/*
+class Solution {
+    public int findMaxForm(String[] strs, int m, int n) {
+        
+        if(strs.length < 1)
+            return 0;
+        
+        int maxStrings = 0;
+        
+        for (int i = 0; i < (1 << strs.length); i++) {
+            int zeroCount = 0;
+            int oneCount = 0;
+            int stringCount = 0;
+            for (int j = 0; j < strs.length; j++){
+                if(((1 << j) & i) <= 0){
+                    zeroCount += strs[j].chars().filter(ch -> ch == '0').count();
+                    oneCount += strs[j].chars().filter(ch -> ch == '1').count();
+                    stringCount++;                    
+                }
+            }            
+        
+            if((m >= zeroCount) && (n >= oneCount) && (maxStrings < stringCount)){
+                maxStrings = stringCount;
+                return maxStrings;
+            }
+            
+        }
+        
+        return maxStrings;
+    
+    }
+}
+
+
+class Solution {
+    public int findMaxForm(String[] strs, int m, int n) {
+        
+        if(strs.length < 1)
+            return 0;
+        
+        int maxStrings = 0;
+        
+        List<List<Boolean>> powerSets = iterativePowerSetByLoopOverNumbers(strs.length);
+        
+        for(List<Boolean> set : powerSets){
+            int zeroCount = 0;
+            int oneCount = 0;
+            int stringCount = 0;
+            for(int i = 0; i < set.size(); i++){
+                if(set.get(i) == true){
+                    zeroCount += strs[i].chars().filter(ch -> ch == '0').count();
+                    oneCount += strs[i].chars().filter(ch -> ch == '1').count();
+                    stringCount++;
+                }
+            }
+            
+            if((m >= zeroCount) && (n >= oneCount) && (maxStrings < stringCount))
+                maxStrings = stringCount;
+            
+        }
+        
+        return maxStrings;
+    
+    }
+    
+    private List<List<Boolean>> iterativePowerSetByLoopOverNumbers(int n) {
+        List<List<Boolean>> powerSet = new ArrayList<>();
+        
+        for (int i = 0; i < (1 << n); i++) {
+            List<Boolean> subset = new ArrayList<>(n);
+            System.out.println("we here");
+            for (int j = 0; j < n; j++){
+                subset.add((((1 << j) & i) > 0) ? true : false);
+            }
+
+            powerSet.add(subset);
+        }
+        
+        Collections.reverse(powerSet);
+        
+        return powerSet;
+    }
+    
+}
+*/
