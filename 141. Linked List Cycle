@@ -17,7 +17,7 @@ public class Solution {
         if(head == null)
             return false;
         
-        while(tortoise.next != null && hare.next.next != null){
+        while(tortoise != null && hare.next != null){
             tortoise = tortoise.next;
             hare = hare.next.next;
             
