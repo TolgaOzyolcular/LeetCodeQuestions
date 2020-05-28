@@ -1,40 +1,60 @@
 class Solution {
     public int numMagicSquaresInside(int[][] grid) {
         int magicSquare = 0;
-
-        for(int i = 0; i < grid[0].length-2; i++){
-            for(int j = 0; j < grid.length-2; j++){
-                
-                HashSet<Integer> numbers = new HashSet<Integer>();
-                numbers.add(grid[j][i]);
-                numbers.add(grid[j][i+1]);
-                numbers.add(grid[j][i+2]);
-                numbers.add(grid[j+1][i]);
-                numbers.add(grid[j+1][i+1]);
-                numbers.add(grid[j+1][i+2]);
-                numbers.add(grid[j+2][i]);
-                numbers.add(grid[j+2][i+1]);
-                numbers.add(grid[j+2][i+2]);
-                
-                if(numbers.size() == 9){
-                
-                    int row = grid[j][i] + grid[j][i+1] + grid[j][i+2];
-                    int row2 = grid[j+1][i] + grid[j+1][i+1] + grid[j+1][i+2];
-                    int row3 = grid[j+2][i] + grid[j+2][i+1] + grid[j+2][i+2];
-
-                    int col = grid[j][i] + grid[j+1][i] + grid[j+2][i];
-                    int col2 = grid[j][i+1] + grid[j+1][i+1] + grid[j+2][i+1];
-                    int col3 = grid[j][i+2] + grid[j+1][i+2] + grid[j+2][i+2];             
-
-                    int diag = grid[j][i] + grid[j+1][i+1] + grid[j+2][i+2];
-                    int diag2 =grid[j+2][i] + grid[j+1][i+1] + grid[j][i+2];
-
-                    if(row == row2 && row == row3 && row == col && row == col2 && row == col3 && row == diag && row == diag2)
-                        magicSquare++;
-                }
-            }
-        }
+        
+        for(int i = 0; i < grid.length-2; i++){
+            for(int j = 0; j < grid[0].length-2; j++){
+                if(isMagicSquare(grid,i,j))
+                    magicSquare++;                                    
+            }      
+        }   
         
         return magicSquare;
+    }
+    
+    public boolean isMagicSquare(int[][] grid, int yCoord, int xCoord){
+        List<Integer> checkAllSums = new ArrayList<Integer>();
+        HashSet<Integer> checkAllDistinct = new HashSet<Integer>();
+        
+        //Rows
+        for(int i = 0; i < 3; i++){
+            checkAllSums.add(grid[i + yCoord][xCoord] + grid[i + yCoord][xCoord+1] + grid[i + yCoord][xCoord+2]);
+            
+            checkAllDistinct.add(grid[i + yCoord][xCoord]);
+            checkAllDistinct.add(grid[i + yCoord][xCoord+1]);
+            checkAllDistinct.add(grid[i + yCoord][xCoord+2]);
+            
+        }
+        
+        //nums cannot be greater than 9 or less than 1        
+        List<Integer> distinctArray = new ArrayList<Integer>();
+        distinctArray.addAll(checkAllDistinct); 
+
+        if(distinctArray.size() < 9)
+            return false;
+
+        if(distinctArray.get(0) < 1 || distinctArray.get(distinctArray.size()-1) > 9)
+            return false;
+        
+        //Columns
+        for(int i = 0; i < 3; i++){
+            checkAllSums.add(grid[yCoord][i+xCoord] + grid[yCoord+1][i + xCoord] + grid[yCoord+2][i + xCoord]);  
+
+        }
+        
+        //diagonals
+        checkAllSums.add(grid[yCoord][xCoord] + grid[yCoord+1][xCoord+1] + grid[yCoord+2][xCoord+2]); 
+            
+        checkAllSums.add(grid[yCoord+2][xCoord+2] + grid[yCoord+1][xCoord+1] + grid[yCoord][xCoord]);  
+        
+        System.out.println(checkAllSums);
+        
+        int sum = checkAllSums.get(0);
+        for(int i = 1; i < 8; i++){
+            if(sum != checkAllSums.get(i))
+                return false;
+        }  
+        
+        return true; 
     }
 }
