@@ -1,0 +1,62 @@
+class Solution {
+    public List<String> letterCombinations(String digits) {
+        HashMap<Character, String> reps = new HashMap<Character,String>();
+        reps.put('2', "abc");
+        reps.put('3', "def");
+        reps.put('4', "ghi");
+        reps.put('5', "jkl");
+        reps.put('6', "mno");
+        reps.put('7', "pqrs");
+        reps.put('8', "tuv");
+        reps.put('9', "wxyz");
+        
+        List<String> output = new ArrayList<String>();
+        
+        if(digits.length() < 1)
+            return output;
+        
+        func1(output, reps, digits, "");
+        
+        return output;
+    }   
+
+    public void func1(List<String> output, HashMap<Character, String> reps, String digits, String currentString){                        
+
+        if(digits.length() == 0)
+            output.add(currentString);
+        
+        else{            
+            String repString = reps.get(digits.charAt(0)); 
+            digits = digits.substring(1);
+            
+            for(int i = 0; i < repString.length(); i++){
+                String letter = Character.toString(repString.charAt(i));
+                
+                func1(output, reps, digits, currentString+letter);
+            }
+        }
+        
+    }
+    
+    /*
+    public String bigLoop(HashMap<Character, String> reps, String digits, int index, String currentString){
+        
+                    
+    }
+    
+    public String smallLoop(HashMap<Character, String> reps, String digits, int index, String currentString, int secondIndex){
+        
+        String tempString = reps.get(digits.charAt(index));      
+        
+        currentString += Character.toString(tempString.charAt(secondIndex));
+        
+        if(index >= digits.length())
+            return currentString;
+                
+        //else
+            //recursive(reps, digits, index, currentString, secondIndex+1);
+        
+        return currentString;
+    }
+    */
+}
