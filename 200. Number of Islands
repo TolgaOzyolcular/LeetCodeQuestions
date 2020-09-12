@@ -1,0 +1,32 @@
+class Solution {
+    public int numIslands(char[][] grid) {
+        int cnt = 0;
+        for(int i = 0; i < grid.length; i++){
+            for(int j = 0; j < grid[0].length; j++){
+                if(grid[i][j] == '1'){
+                    cnt++;
+                    DFS(grid, i, j);
+                }
+                                    
+            }
+        }
+       
+        return cnt;
+    }
+   
+    public void DFS(char[][] grid, int i, int j){
+        if(grid[i][j] == '1'){
+            grid[i][j] = 2;
+ 
+            if(i < grid.length-1)
+                DFS(grid, i+1, j);
+            if(i > 0)
+                DFS(grid, i-1, j);
+            if(j < grid[0].length-1)
+                DFS(grid, i, j+1);
+            if(j > 0)
+                DFS(grid, i, j-1);
+        }           
+        
+    }
+}
