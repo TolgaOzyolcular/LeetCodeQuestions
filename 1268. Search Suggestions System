@@ -1,0 +1,39 @@
+
+class Solution {
+    public List<List<String>> suggestedProducts(String[] products, String searchWord) {  
+        
+        List<List<String>> allTerms = new ArrayList<List<String>>();    
+        StringBuilder currentString = new StringBuilder();
+       
+        Arrays.sort(products);
+       
+        for(int i = 0; i < searchWord.length(); i++){
+            List<String> terms = new ArrayList<String>();
+            currentString.append(searchWord.charAt(i));
+           
+            allTerms.add(getList(products, currentString.toString()));
+           
+        }
+       
+        return allTerms;
+   }
+   
+    public List<String> getList(String[] products, String currentString){
+        List<String> list = new ArrayList<String>();
+       
+        for(int i = 0; i < products.length; i++){
+            StringBuilder compare = new StringBuilder();
+            for(int j = 0; j < currentString.length(); j++){
+                if(j < products[i].length())
+                    compare.append(products[i].charAt(j));
+            }     
+            if(compare.toString().equals(currentString))
+                list.add(products[i]);
+           
+            if(list.size() == 3)
+                break;
+        }
+       
+        return list;
+    }
+}
