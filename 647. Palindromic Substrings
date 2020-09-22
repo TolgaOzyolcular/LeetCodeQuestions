@@ -1,0 +1,32 @@
+Class Solution {
+    public int countSubstrings(String s) {
+        int cnt = 0;       
+        
+        for(int i = 0; i < s.length(); i++){
+            StringBuilder subset = new StringBuilder();
+            for(int j = i; j < s.length(); j++){
+                subset.append(s.charAt(j));
+                if(isPalindrome(subset.toString()))
+                    cnt++;
+            }
+        } 
+        
+        return cnt;
+    }
+   
+    public boolean isPalindrome(String palindrome){
+        int i = 0;
+        int j = palindrome.length() - 1;
+       
+        while(i < j){
+           
+            if(palindrome.charAt(i) != palindrome.charAt(j))
+                return false;
+           
+            i++;
+            j--;
+        }
+           
+        return true;
+    }
+}
