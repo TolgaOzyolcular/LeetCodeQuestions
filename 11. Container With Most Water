@@ -1,0 +1,35 @@
+class Solution {
+   
+    /*
+        - Start with pointer on both ends of array
+        - Which ever end is smaller, bring closer by one (ex. i1 & j7 -> i2 & j7)
+        - Store the max area at each step, changing the max water if larger
+        - repeat while i < j
+    */
+   
+    public int maxArea(int[] height) {
+        int i = 0;
+        int j = height.length - 1;
+        int maxWater = 0;
+       
+        while(i < j){
+            if(height[i] <= height[j]){
+                int temp = height[i] * (j-i);
+                if(temp > maxWater)
+                    maxWater = temp;
+               
+                i++;
+            }
+           
+            else{
+                int temp = height[j] * (j-i);
+                if(temp > maxWater)
+                    maxWater = temp;
+               
+                j--;
+            }
+        }
+       
+        return maxWater;
+    }
+}
