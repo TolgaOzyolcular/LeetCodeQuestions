@@ -1,0 +1,90 @@
+class Solution {
+    int ones = 0;
+    int minutes = 0;
+    public int orangesRotting(int[][] grid) {
+        
+        /*
+            - Scan through graph initially.
+                - Add all rotten oranges to queue.
+                    - Keep track of last queue object (marked).
+                - Count number of unrotten oranges's (ones).
+            - Start unloading queue.
+                - Check all adjacent nodes for each object.
+                    - For every unrotten orange found:
+                        - Decrement ones. 
+                        - Replace value with 2
+                        - Add to queue.
+                - If object is same as Marked, increment Minutes.   
+                
+        */
+        
+        LinkedList<int[]> queue = new LinkedList<int[]>();
+            
+        for(int i = 0; i < grid.length; i++){
+            for(int j = 0; j < grid[0].length; j++){
+                if(grid[i][j] == 2)
+                    queue.add(new int[] {i,j});
+                if(grid[i][j] == 1)
+                    ones++;
+            }
+        }
+        
+        if(queue.isEmpty() && ones == 0)
+            return 0;
+        
+        int[] marked = new int[] {0,0};
+        
+        if(!queue.isEmpty())
+            marked = queue.getLast();
+        
+        while(!queue.isEmpty()){
+            int[] current = queue.removeFirst();
+            int i = current[0];
+            int j = current[1];
+            
+            //Up
+            if(current[0] > 0){
+                if(grid[i - 1][j] == 1){
+                    ones--;
+                    grid[i - 1][j] = 2;
+                    queue.add(new int[] {i-1, j});
+                }
+            }
+                
+            //Down
+            if(i < grid.length-1){
+                if(grid[i + 1][j] == 1){
+                    ones--;
+                    grid[i + 1][j] = 2;
+                    queue.add(new int[] {i + 1, j});
+                }
+            }
+                              
+            //Left
+            if(j > 0){
+                if(grid[i][j-1] == 1){
+                    ones--;
+                    grid[i][j-1] = 2;
+                    queue.add(new int[] {i, j-1});
+                }
+            }
+                              
+            //Right
+            if(j < grid[0].length-1){
+                if(grid[i][j+1] == 1){
+                    ones--;
+                    grid[i][j+1] = 2;
+                    queue.add(new int[] {i, j+1});
+                }
+            }
+            
+            if (current.equals(marked)){
+                minutes++;
+                if(!queue.isEmpty())
+                    marked = queue.getLast();
+            }                
+        }
+        
+        return (ones == 0) ? (minutes-1):-1;
+    }
+}
