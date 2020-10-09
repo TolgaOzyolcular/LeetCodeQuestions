@@ -1,0 +1,47 @@
+class Solution {
+    List<List<Integer>> output = new ArrayList<List<Integer>>();
+   
+    public List<List<Integer>> permute(int[] nums) {
+        
+        
+        int k = nums.length;
+       
+        generate(k, nums);
+       
+        return output;
+    }
+   
+    public void generate(int k, int[] nums){
+ 
+        if(k == 1){
+            List<Integer> intList = new ArrayList<Integer>(nums.length);
+           
+            for (int i : nums)
+            {
+                intList.add(i);
+            }
+           
+            output.add(intList);
+            return;
+        }           
+        
+        else{
+            generate(k - 1, nums);
+               
+            for(int i = 0; i < (k-1); i++){
+                if(k % 2 == 0)
+                    swap(nums, i, (k-1));               
+                else
+                    swap(nums, 0, (k-1));
+               
+                generate(k - 1, nums);
+            }
+        }    
+    }
+   
+    public void swap (int[] nums, int i, int j) {
+        int t = nums[i];
+        nums[i] = nums[j];
+        nums[j] = t;
+    }
+}
