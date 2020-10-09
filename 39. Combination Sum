@@ -1,0 +1,47 @@
+class Solution {
+   
+    List<List<Integer>> output = new ArrayList<List<Integer>>();
+       
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        /*
+            - Sort given array.
+            - Take number and check if smaller than target. If true, add to list.
+            - Navigate from left to right finding all numbers that when added are smaller than target. Add to list.
+            - Repeat last step until total sum of list is equal to or higher than target. If equal to target, add to main list.
+        */
+       
+        Arrays.sort(candidates);
+       
+        for(int i : candidates)
+            backTrack(candidates, target, new ArrayList<Integer>());
+                                    
+        return output;
+       
+    }
+   
+    public void backTrack(int[] candidates, int target, List<Integer> group){
+        int sum = group.stream().mapToInt(Integer::intValue).sum();
+       
+        if(sum == target){
+            Collections.sort(group);
+            if(!output.contains(group))
+                output.add(new ArrayList<>(group));
+            return;
+        }         
+        
+        else if (sum > target){
+            return;
+        }
+               
+        else{
+            for(int i : candidates){
+                if((i + sum) <= target){
+                    group.add(i);
+                    backTrack(candidates, target, new ArrayList<Integer>(group));
+                    group.remove(group.size()-1);
+                }               
+            }
+        }
+    }
+   
+}
