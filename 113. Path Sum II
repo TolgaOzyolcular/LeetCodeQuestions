@@ -71,3 +71,65 @@ class Solution {
         return allPaths;
     }
 }
+
+/*
+
+Another Solution
+
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+
+class Solution {
+    List<List<Integer>> paths = new ArrayList<List<Integer>>();
+        
+    public List<List<Integer>> pathSum(TreeNode root, int sum) {
+        
+        /*
+            - Check if root == null.
+            - Start DFS from root to each leaf.
+            - Add to list path & add to visited set.
+            - If leaf, check sum of path.
+                - If equals, add path to paths by creating copy.
+                - Else remove node from path
+        */
+        
+        if(root == null){
+            return paths;
+        }
+        
+        pathToRoot(root, sum, new ArrayList<Integer>());
+        
+        return paths;                
+    }
+    
+    public void pathToRoot(TreeNode current, int sum, List<Integer> path){
+        if(current == null)
+            return;
+        
+        path.add(current.val);
+        
+        if(current.left == null && current.right == null){
+            if(path.stream().mapToInt(Integer::intValue).sum() == sum){
+                List<Integer> tempList = new ArrayList<Integer>(path);
+                paths.add(path);
+            }
+        }
+        
+        else{
+            pathToRoot(current.left, sum, new ArrayList<Integer>(path));
+            pathToRoot(current.right, sum, new ArrayList<Integer>(path));
+        }
+    }
+}
+*/
